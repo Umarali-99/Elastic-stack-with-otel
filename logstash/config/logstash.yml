@@ -1,0 +1,6 @@
+xpack.management.enabled: true
+xpack.management.pipeline.id: [test-*]
+xpack.management.elasticsearch.username: admin
+xpack.management.elasticsearch.password: changeme
+xpack.management.elasticsearch.hosts: ["http://elasticsearch:9200"]
+xpack.management.logstash.poll_interval: 5s

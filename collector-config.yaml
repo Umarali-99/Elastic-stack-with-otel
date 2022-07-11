@@ -1,0 +1,42 @@
+receivers:
+  otlp:
+    protocols:
+      grpc:
+      http:
+
+  jaeger:
+    protocols:
+      #grpc:
+       # endpoint: jaeger:14250
+      #thrift_binary:
+      thrift_compact:
+        endpoint: 0.0.0.0:6831
+      #thrift_http:
+
+processors:
+  batch:
+    timeout: 1s
+    send_batch_size: 1024
+
+extensions:
+  health_check:
+
+exporters:
+  logging:
+    loglevel: debug
+
+  otlp:
+    endpoint: "http://fleet-server:8200"
+    insecure: true
+
+service:
+  extensions: [health_check]
+  pipelines:
+    metrics:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [otlp]
+    traces:
+      receivers: [otlp,jaeger]
+      processors: [batch]
+      exporters: [otlp,logging]
